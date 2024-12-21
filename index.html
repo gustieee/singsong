@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piringan Hitam</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<style>
+    .progress-bar{
+        accent-color: green;
+        height: 50px;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="disc-container">
+            <audio src="audio/yunkai.mp3" id="audio"></audio>
+            <img src="image/yunkai.jpeg" id="disc" class="disc" alt="">
+            <p class="track-title">Blue - Yunkai</p>
+            <input type="range" id="duration" min="0" max="100" class="progress-bar">
+            <i class="play-button bi bi-play-fill" id="button"></i>
+        </div>
+    </div>
+    <script>
+        const audio = document.getElementById('audio');
+        const duration = document.getElementById('duration');
+        const button = document.getElementById('button');
+        const disc = document.getElementById('disc');
+
+        let isPlaying = false;
+        let rotation = 0;
+    
+        button.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                button.classList.remove('bi-play-fill');
+                button.classList.add('bi-pause-fill');
+                isPlaying = true;
+            } else {
+                audio.pause();
+                button.classList.add('bi-play-fill');
+                button.classList.remove('bi-pause-fill');
+                isPlaying = false;
+                
+            }
+        });
+    
+        audio.addEventListener('timeupdate', () => {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            duration.value = progress;
+            disc.style.transform = `rotate(${rotation}deg)`
+            if(isPlaying){
+                rotation += 5;
+            }
+        });
+    
+        duration.addEventListener('input', () => {
+            audio.currentTime = (duration.value / 100) * audio.duration;
+        });
+
+        
+    </script>
+</body>
+</html>
